@@ -168,31 +168,36 @@ public class CommonJsonUtil {
     }    
 
     public static void filterOperationData(Map<String, Object> response, JdbcConfig jdbcCfg) {
-        if (response == null || jdbcCfg == null) return;
+        try {
+            if (response == null || jdbcCfg == null) return;
 
-        Map<String, Object> ops = (Map<String, Object>) response.get("operations");
-        if (ops != null) {
-            ops.forEach((opName, opResult) -> {
-                // 1. JdbcConfig에서 현재 오퍼레이션 이름에 해당하는 설정을 찾음
-                String recordName = jdbcCfg.getOperations().stream()
-                        .filter(op -> op.getOperation_name().equals(opName))
-                        .map(OperationConfig::getData_record) // 설정된 record_name 추출
-                        .findFirst()
-                        .orElse("data"); // 기본값이 "data"라면 대비책으로 설정
+            Object opsObj = response.get("operations");
+            // Map 타입인지 안전하게 체크
+            if (opsObj instanceof Map) {
+                Map<String, Object> ops = (Map<String, Object>) opsObj;
+                ops.forEach((opName, opResult) -> {
+                    try {
+                        // Java Stream 처리 시 Null 체크 강화
+                        String recordName = jdbcCfg.getOperations().stream()
+                                .filter(op -> op != null && opName.equals(op.getOperation_name()))
+                                .map(OperationConfig::getData_record)
+                                .findFirst()
+                                .orElse("data");
 
-                // 2. 결과 데이터 제거
-                if (opResult instanceof JdbcExecutionOperationResult) {
-                    // 객체 형태인 경우 내부 필드 초기화
-                    ((JdbcExecutionOperationResult) opResult).setResultData(null);
-                } else if (opResult instanceof Map) {
-                    // Map 형태인 경우 해당 recordName 키를 삭제
-                    Map<String, Object> resultMap = (Map<String, Object>) opResult;
-                    resultMap.remove(recordName);
-                    
-                    // 혹시 모를 기본값 "data"도 확인 사살 (선택 사항)
-                    resultMap.remove("data"); 
-                }
-            });
+                        if (opResult instanceof JdbcExecutionOperationResult) {
+                            ((JdbcExecutionOperationResult) opResult).setResultData(null);
+                        } else if (opResult instanceof Map) {
+                            Map<String, Object> resultMap = (Map<String, Object>) opResult;
+                            resultMap.remove(recordName);
+                            resultMap.remove("data"); 
+                        }
+                    } catch (Exception e) {
+                        // 개별 오퍼레이션 처리 중 에러가 나도 전체 흐름을 방해하지 않음
+                    }
+                });
+            }
+        } catch (Exception e) {
+            // 최상위에서 예외를 잡아 finally 블록 밖으로 터지지 않게 방어
         }
     }
 }

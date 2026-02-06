@@ -49,30 +49,23 @@ public class JdbcMediator extends AbstractMediator {
 	        
 	        if (encodedIfConfig == null) throw new Exception("ifConfig property is missing");
 
-//	        String decodedIfConfig = new String(
-//	            Base64.getDecoder().decode(encodedIfConfig),
-//	            StandardCharsets.UTF_8
-//	        );
-
 	        String decodedIfConfig = new String(Base64.getDecoder().decode(encodedIfConfig), StandardCharsets.UTF_8);
-	        
-	       // String decodedIfConfig = CommonUtil.decodeYamlConfig(encodedIfConfig);
 	        
 	        jdbcCfg = JsonConfigLoader.loadFromString(decodedIfConfig);
 	        
 	        // msgID 읽어오기
-	        msgID = getStringProperty(context, "msgID");
+	        msgID = getStringProperty(context, "msgID");	        
 	        
+	        String ops = LogMessageManager.formatOperations(jdbcCfg.getOperations(), op -> op.getOperation_name());
+	        LogMessageManager.infoStartIf(log, msgID, jdbcCfg.getApi_name(), ops);
+
 	        // 입력 데이터 확보
 	        String inputJson = MiPayloadUtil.readJsonPayload(context);
 	        
 	        // DataSource 준비
 	        Context ctx = new InitialContext();
 	        DataSource ds = (DataSource) ctx.lookup(jdbcCfg.getTarget_jndi_name());
-	        
-			String ops = LogMessageManager.formatOperations(jdbcCfg.getOperations(), op -> op.getOperation_name());
-	        LogMessageManager.infoStartIf(log, msgID, jdbcCfg.getApi_name(), ops);
-	        
+	        	        
 	        // 실행
 	        JdbcExecutor executor = new JdbcExecutor(ds,msgID);
 	        jdbcExecResult = executor.executeJdbc(jdbcCfg, inputJson, jdbcExecResult);
@@ -144,8 +137,12 @@ public class JdbcMediator extends AbstractMediator {
 	        }
 	    } finally {
 	        // 로그는 응답 설정 성공 여부와 상관없이 실행
-	        logExecutionSummarySafely(msgID,jdbcCfg, jdbcExecResult, if_success, startTime, endTime);   
-	        LogMessageManager.infoEndIf(log, msgID, jdbcCfg.getApi_name());
+	    	
+    		logExecutionSummarySafely(msgID,jdbcCfg, jdbcExecResult, if_success, startTime, endTime);
+    		
+	    	if (jdbcCfg != null) {
+	            LogMessageManager.infoEndIf(log, msgID, jdbcCfg.getApi_name());
+	        }	    	
 	        
         	// synapse-handler로 모니터링 데이터 설정
 	        // 이때 recored_name ( data ) 는 제거
@@ -154,8 +151,7 @@ public class JdbcMediator extends AbstractMediator {
 	        	context.setProperty("eventDetail", CommonJsonUtil.toJson(response));
 	        }catch(Exception e) {
 	        	
-	        }
-	        
+	        }	        
 	    }
 	    
 	    return true;

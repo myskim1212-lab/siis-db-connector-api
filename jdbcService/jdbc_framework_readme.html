@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jdbc_framework_readme.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="siis-db-connector">SIIS DB Connector</h1>
+<p>설정 기반 JDBC 실행 엔진으로, JSON 입력 데이터를 DB 스키마에 매핑하고 복잡한 트랜잭션 흐름을 제어합니다.</p>
+<hr>
+<h2 id="%EB%AA%A9%EC%B0%A8">목차</h2>
+<ol>
+<li><a href="#1-%EA%B0%9C%EC%9A%94">개요</a></li>
+<li><a href="#2-%EC%A3%BC%EC%9A%94-%ED%8A%B9%EC%A7%95">주요 특징</a></li>
+<li><a href="#3-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90">핵심 개념</a></li>
+<li><a href="#4-%EC%8B%A4%ED%96%89-%ED%9D%90%EB%A6%84">실행 흐름</a></li>
+<li><a href="#5-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%A0%9C%EC%96%B4">트랜잭션 제어</a></li>
+<li><a href="#6-%EC%84%A4%EC%A0%95-%EA%B0%80%EC%9D%B4%EB%93%9C">설정 가이드</a></li>
+<li><a href="#7-%EC%82%AC%EC%9A%A9-%EC%98%88%EC%A0%9C">사용 예제</a></li>
+<li><a href="#8-%EA%B3%A0%EA%B8%89-%EA%B8%B0%EB%8A%A5">고급 기능</a></li>
+<li><a href="#9-%EC%97%90%EB%9F%AC-%EC%B2%98%EB%A6%AC">에러 처리</a></li>
+<li><a href="#10-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94">성능 최적화</a></li>
+<li><a href="#11-%EC%A0%9C%EC%95%BD%EC%82%AC%ED%95%AD">제약사항</a></li>
+<li><a href="#12-%EB%B0%B0%ED%8F%AC-%EA%B0%80%EC%9D%B4%EB%93%9C">배포 가이드</a></li>
+</ol>
+<hr>
+<h2 id="1-%EA%B0%9C%EC%9A%94">1. 개요</h2>
+<h3 id="11-%EC%84%A4%EA%B3%84-%EB%AA%A9%EC%A0%81">1.1 설계 목적</h3>
+<p>SIIS DB Connector 는 다음 요구사항을 가진 시스템을 위해 설계되었습니다:</p>
+<ul>
+<li>API/Integration Layer에서 DB 연계 로직 코드 제거</li>
+<li>SQL, 프로시저, 트랜잭션 흐름을 설정으로 제어</li>
+<li>JSON 구조와 DB 스키마 간 유연한 매핑</li>
+<li>하나의 요청에서 다수의 DML + Procedure 혼합 처리</li>
+<li>Operation 단위 명시적 트랜잭션 분리</li>
+<li>Master-Detail 관계 데이터의 원자적 처리</li>
+</ul>
+<h3 id="12-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98">1.2 아키텍처</h3>
+<pre class="hljs"><code><div>Client Request (JSON)
+        │
+        ▼
+Config Loader &amp; Validator
+        │
+        ▼
+JdbcExecutor
+ ├─ JSON Parsing
+ ├─ Record Extraction
+ ├─ Operation Loop
+ │   ├─ Batch Collection
+ │   ├─ Commit Action Check
+ │   ├─ Master-Detail Processing
+ │   └─ Transaction Execution
+ └─ Result Generation
+        │
+        ▼
+Execution Result (JSON)
+</div></code></pre>
+<h3 id="13-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B5%AC%EC%84%B1%EB%8F%84">1.3 시스템 구성도</h3>
+<img src="./시스템구성도.png" alt="시스템 구성도" width="700">
+<h3 id="%EA%B5%AC%EC%84%B1-%EC%9A%94%EC%86%8C">구성 요소</h3>
+<h3 id="1-client-%EC%98%81%EC%97%AD">1) Client 영역</h3>
+<table>
+<thead>
+<tr>
+<th>구성요소</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Client Program</td>
+<td>클라이언트 애플리케이션</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>클라이언트 측 데이터베이스</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-siis-%ED%94%8C%EB%9E%AB%ED%8F%BC">2) SIIS 플랫폼</h3>
+<h4 id="siis-portal">* SIIS Portal</h4>
+<table>
+<thead>
+<tr>
+<th>구성요소</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API 등록/배포</td>
+<td>API 서비스 등록 및 배포 관리</td>
+</tr>
+<tr>
+<td>JDBC Config 생성/배포</td>
+<td>API 등록정보를 기반으로 JDBC Config 자동 생성</td>
+</tr>
+</tbody>
+</table>
+<h4 id="gateway">* Gateway</h4>
+<ul>
+<li>API 요청 라우팅 및 관리</li>
+</ul>
+<h4 id="mi-micro-integrator">* MI (Micro Integrator)</h4>
+<table>
+<thead>
+<tr>
+<th>구성요소</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JDBC API</td>
+<td>Client 호출 URL 제공 , SIIS DB Connector 호출</td>
+</tr>
+<tr>
+<td>Config Registry</td>
+<td>JDBC 설정 정보 저장소</td>
+</tr>
+<tr>
+<td>SIIS DB Connector</td>
+<td>데이터베이스 연결 및 데이터 처리</td>
+</tr>
+<tr>
+<td>└─ JDBCMediator</td>
+<td>MI 엔진으로부터 트리거링 되는 클래스</td>
+</tr>
+<tr>
+<td>└─ JDBCExecutor</td>
+<td>실제 JDBC 쿼리 실행</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-provider-%EC%98%81%EC%97%AD">3) Provider 영역</h3>
+<table>
+<thead>
+<tr>
+<th>구성요소</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database</td>
+<td>외부 제공자의 데이터베이스</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-%EC%A3%BC%EC%9A%94-%ED%8A%B9%EC%A7%95">2. 주요 특징</h2>
+<h3 id="21-zero-code-db-integration">2.1 Zero-Code DB Integration</h3>
+<p><strong>기존 방식:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">saveUser</span><span class="hljs-params">(UserDto user)</span> </span>{
+    userRepository.delete(user.getId());
+    userRepository.merge(user);
+    callProcedure();
+}
+</div></code></pre>
+<p><strong>SIIS DB Connector:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">delete_tb_user</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">insert_tb_user</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">proc_tb_user</span>
+</div></code></pre>
+<h3 id="22-%EC%88%9C%EC%88%98-jdbc-%EA%B8%B0%EB%B0%98">2.2 순수 JDBC 기반</h3>
+<ul>
+<li>Named Parameter Binding 자체 구현</li>
+<li>트랜잭션 경계 명시적 제어</li>
+</ul>
+<h3 id="23-%EC%9C%A0%EC%97%B0%ED%95%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A7%A4%ED%95%91">2.3 유연한 데이터 매핑</h3>
+<table>
+<thead>
+<tr>
+<th>JSON 필드</th>
+<th>SQL 파라미터</th>
+<th>DB 타입</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>:USER_ID</td>
+<td>INT</td>
+</tr>
+<tr>
+<td>name</td>
+<td>:USER_NAME</td>
+<td>VARCHAR</td>
+</tr>
+<tr>
+<td>crtdt</td>
+<td>:CREATED_DATE</td>
+<td>DATE</td>
+</tr>
+<tr>
+<td>addr</td>
+<td>:USER_ADDR</td>
+<td>CLOB</td>
+</tr>
+<tr>
+<td>profile</td>
+<td>:USER_PROFILE</td>
+<td>BLOB</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90">3. 핵심 개념</h2>
+<h3 id="31-operation">3.1 Operation</h3>
+<p>하나의 SQL 또는 Stored Procedure 실행 단위입니다.</p>
+<pre class="hljs"><code><div>  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">insert_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">INSERT</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>        <span class="hljs-comment"># COMMIT / CONTINUE</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span>            <span class="hljs-comment"># ALL / ROW</span>
+  
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      INSERT INTO TB_USER(
+          USER_ID, USER_NAME, USER_NICK, USER_AGE, USER_SCORE,
+          CREATED_DATE, UPDATED_TS, OPTIONAL_COL, IS_ACTIVE,
+          USER_ADDR, USER_PROFILE
+      ) 
+      VALUES (
+          :USER_ID, :USER_NAME, :USER_NICK, :USER_AGE, :USER_SCORE,
+          :CREATED_DATE, :UPDATED_TS, :OPTIONAL_COL, :IS_ACTIVE,
+          :USER_ADDR, :USER_PROFILE
+      )
+</span></div></code></pre>
+<h3 id="32-commit-action">3.2 Commit Action</h3>
+<p>Operation의 트랜잭션 처리 방식을 결정합니다.</p>
+<table>
+<thead>
+<tr>
+<th>Commit Action</th>
+<th>동작</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CONTINUE</code></td>
+<td>다음 Operation과 묶어서 하나의 트랜잭션으로 처리</td>
+</tr>
+<tr>
+<td><code>COMMIT</code></td>
+<td>현재까지 누적된 Operation을 즉시 커밋하고 트랜잭션 종료</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>중요:</strong> Master-Detail 구조에서 Detail은 Master의 트랜잭션에 따라 Commit/Rollback됩니다.</p>
+<h3 id="33-commit-scope">3.3 Commit Scope</h3>
+<p>레코드 처리 단위를 결정합니다.</p>
+<table>
+<thead>
+<tr>
+<th>Commit Scope</th>
+<th>동작</th>
+<th>적용 가능 타입</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ALL</code></td>
+<td>모든 레코드를 하나의 트랜잭션으로 처리</td>
+<td>모든 타입</td>
+</tr>
+<tr>
+<td><code>ROW</code></td>
+<td>각 레코드를 개별 트랜잭션으로 처리</td>
+<td><code>INSERT</code>, <code>UPSERT</code>만 가능</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>중요:</strong></p>
+<ul>
+<li><code>ROW</code> scope는 <code>SELECT</code>, <code>PROCEDURE</code> 타입에서는 무시됩니다.</li>
+<li>Master-Detail 구조에서는 Master에서만 <code>ALL</code> 또는 <code>ROW</code> 타입이 지원되며, Detail은 Master가 Commit될 때 함께 Commit됩니다.</li>
+</ul>
+<h3 id="34-data-record">3.4 Data Record</h3>
+<p>JSON 입력에서 추출할 데이터 레코드명을 지정합니다.</p>
+<p><strong>Request JSON:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"operations"</span>: {
+        <span class="hljs-attr">"insert_tb_user"</span>: {
+            <span class="hljs-attr">"data"</span>: [
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"사용자_1"</span>,
+                    <span class="hljs-attr">"nick"</span>: <span class="hljs-string">"NICK_1"</span>,
+                    <span class="hljs-attr">"age"</span>: <span class="hljs-number">21</span>,
+                    <span class="hljs-attr">"score"</span>: <span class="hljs-number">1234.56</span>,
+                    <span class="hljs-attr">"crtdt"</span>: <span class="hljs-string">"2026-01-20"</span>,
+                    <span class="hljs-attr">"updts"</span>: <span class="hljs-string">"2026-01-20T06:45:41.529+00:00"</span>,
+                    <span class="hljs-attr">"optional"</span>: <span class="hljs-literal">null</span>,
+                    <span class="hljs-attr">"active"</span>: <span class="hljs-string">"N"</span>,
+                    <span class="hljs-attr">"addr"</span>: <span class="hljs-string">"서울시 강남구 테헤란로 1번지\nCLOB 테스트 데이터"</span>,
+                    <span class="hljs-attr">"profile"</span>: <span class="hljs-string">"UFJPRklMRV9CSU5BUllfMQ=="</span>
+                }
+            ]
+        }
+    }
+}
+</div></code></pre>
+<p><strong>Config:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-attr">operation_name:</span> <span class="hljs-string">insert_tb_user</span>
+<span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+</div></code></pre>
+<hr>
+<h2 id="4-%EC%8B%A4%ED%96%89-%ED%9D%90%EB%A6%84">4. 실행 흐름</h2>
+<h3 id="41-%EC%A0%84%EC%B2%B4-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4">4.1 전체 프로세스</h3>
+<pre class="hljs"><code><div>executeJdbc()
+ │
+ ├─ 1. JSON 파싱 (1회)
+ │
+ ├─ 2. Operation 순회
+ │    │
+ │    ├─ Record 추출 (JsonPath 기반)
+ │    │
+ │    ├─ Commit Scope 판단
+ │    │    ├─ ROW: ROW 단위 COMMIT
+ │    │    └─ ALL: 전체 COMMIT
+ │    │
+ │    ├─ Commit Action 판단
+ │    │    ├─ CONTINUE: Batch 누적
+ │    │    └─ COMMIT: Batch 실행 &amp; 커밋
+ │    │
+ │    ├─ Master-Detail 처리
+ │    │    ├─ Master INSERT/UPDATE
+ │    │    └─ Detail INSERT/UPDATE
+ │    │
+ │    └─ executeInTx()
+ │         ├─ Transaction Begin
+ │         ├─ SQL/Procedure 실행
+ │         ├─ 성공: Commit
+ │         └─ 실패: Rollback
+ │
+ └─ 3. JdbcExecutionResult 반환
+</div></code></pre>
+<hr>
+<h2 id="5-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%A0%9C%EC%96%B4">5. 트랜잭션 제어</h2>
+<h3 id="51-%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4%EB%B3%84-%EB%8F%99%EC%9E%91">5.1 시나리오별 동작</h3>
+<h4 id="%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4-1-%EC%A0%84%EC%B2%B4-%EB%AC%B6%EC%9D%8C-%EC%B2%98%EB%A6%AC">시나리오 1: 전체 묶음 처리</h4>
+<p><strong>Config:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">op1</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">CONTINUE</span>
+    
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">op2</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">CONTINUE</span>
+    
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">op3</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+</div></code></pre>
+<p><strong>실행:</strong></p>
+<pre class="hljs"><code><div>Transaction 1 {
+    [OP1 CONTINUE]
+    [OP2 CONTINUE]
+    [OP3 COMMIT]
+}
+→ COMMIT (OP1, OP2, OP3 모두 함께)
+</div></code></pre>
+<h4 id="%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4-2-%EC%A4%91%EA%B0%84-%EC%BB%A4%EB%B0%8B">시나리오 2: 중간 커밋</h4>
+<p><strong>Config:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">delete_old</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">CONTINUE</span>
+    
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">insert_new</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+    
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">call_proc</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+</div></code></pre>
+<p><strong>실행:</strong></p>
+<pre class="hljs"><code><div>Transaction 1 {
+    [DELETE CONTINUE]
+    [INSERT COMMIT]
+}
+→ COMMIT 1 (DELETE + INSERT)
+
+Transaction 2 {
+    [PROCEDURE COMMIT]
+}
+→ COMMIT 2 (PROCEDURE만)
+</div></code></pre>
+<h4 id="%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4-3-%EA%B0%9C%EB%B3%84-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98">시나리오 3: 개별 트랜잭션</h4>
+<p><strong>Config:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">op1</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+    
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">op2</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+</div></code></pre>
+<p><strong>실행:</strong></p>
+<pre class="hljs"><code><div>Transaction 1 {
+    [OP1 COMMIT]
+}
+→ COMMIT 1
+
+Transaction 2 {
+    [OP2 COMMIT]
+}
+→ COMMIT 2
+</div></code></pre>
+<h3 id="52-%EC%8B%A4%EC%A0%84-%ED%8C%A8%ED%84%B4-delete-%E2%86%92-insert-%E2%86%92-procedure">5.2 실전 패턴: DELETE → INSERT → PROCEDURE</h3>
+<p><strong>Config:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">delete_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">DELETE</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">CONTINUE</span>
+    
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">insert_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">INSERT</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+    
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">proc_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">PROCEDURE</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+</div></code></pre>
+<p><strong>실행:</strong></p>
+<pre class="hljs"><code><div>Transaction 1 {
+    [DELETE CONTINUE]  ─┐
+    [INSERT COMMIT]     ├─ 원자적 데이터 갱신
+}                       │
+→ COMMIT 1             ─┘
+
+Transaction 2 {
+    [PROCEDURE COMMIT]  ← 동기화 처리
+}
+→ COMMIT 2
+</div></code></pre>
+<p><strong>장점:</strong></p>
+<ul>
+<li>DELETE + INSERT가 원자적으로 처리됨</li>
+<li>PROCEDURE 실패 시 DELETE + INSERT는 이미 커밋된 상태 유지</li>
+<li>명확한 트랜잭션 경계</li>
+</ul>
+<hr>
+<h2 id="6-%EC%84%A4%EC%A0%95-%EA%B0%80%EC%9D%B4%EB%93%9C">6. 설정 가이드</h2>
+<h3 id="61-%EC%A0%84%EC%97%AD-%EC%84%A4%EC%A0%95">6.1 전역 설정</h3>
+<pre class="hljs"><code><div><span class="hljs-attr">api_name:</span> <span class="hljs-string">DeleteInsertProcedure</span>
+
+<span class="hljs-attr">target_system_key:</span> <span class="hljs-string">SST0001DEF</span>
+<span class="hljs-attr">target_system_name:</span> <span class="hljs-string">MYTEST</span>
+<span class="hljs-attr">target_jndi_name:</span> <span class="hljs-string">jdbc/SST0001DEF</span>
+
+<span class="hljs-attr">batch_size:</span> <span class="hljs-number">100</span>
+
+<span class="hljs-attr">stop_on_operation_error:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">stop_on_row_error:</span> <span class="hljs-literal">true</span>
+
+<span class="hljs-attr">data_record_path:</span> <span class="hljs-string">/operations</span>
+
+<span class="hljs-attr">date_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyyMMdd</span>
+
+<span class="hljs-attr">timestamp_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSSXXX</span>   <span class="hljs-comment"># ISO-8601 (timezone)</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSS</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span> <span class="hljs-string">HH:mm:ss</span>
+
+<span class="hljs-attr">operations:</span>
+  <span class="hljs-comment"># Operation 목록</span>
+</div></code></pre>
+<h3 id="62-%EC%84%A4%EC%A0%95-%ED%95%AD%EB%AA%A9-%EC%83%81%EC%84%B8">6.2 설정 항목 상세</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>설명</th>
+<th>필수 여부</th>
+<th>기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>api_name</code></td>
+<td>API 식별자</td>
+<td><strong>필수</strong></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>target_system_key</code></td>
+<td>대상 시스템 키</td>
+<td><strong>필수</strong></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>target_system_name</code></td>
+<td>대상 시스템 이름</td>
+<td>선택</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>target_jndi_name</code></td>
+<td>JNDI 이름</td>
+<td>선택</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>batch_size</code></td>
+<td>Batch 처리 크기</td>
+<td>선택</td>
+<td><code>100</code></td>
+</tr>
+<tr>
+<td><code>data_record_path</code></td>
+<td>JSON 루트 경로</td>
+<td>선택</td>
+<td><code>&quot;/&quot;</code></td>
+</tr>
+<tr>
+<td><code>stop_on_operation_error</code></td>
+<td>Operation 실패 시 전체 중단 여부</td>
+<td>선택</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>stop_on_row_error</code></td>
+<td>Row 실패 시 Operation 중단 여부 (ROW scope)</td>
+<td>선택</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>date_formats</code></td>
+<td>날짜 파싱 포맷 목록</td>
+<td>선택</td>
+<td>기본 포맷 제공</td>
+</tr>
+<tr>
+<td><code>timestamp_formats</code></td>
+<td>시간 파싱 포맷 목록</td>
+<td>선택</td>
+<td>기본 포맷 제공</td>
+</tr>
+<tr>
+<td><code>operations</code></td>
+<td>Operation 목록</td>
+<td><strong>필수</strong></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="dateformats-%EA%B8%B0%EB%B3%B8%EA%B0%92">date_formats 기본값</h4>
+<p>입력 데이터의 포맷이 다양하더라도 설정된 포맷 리스트를 순차적으로 시도하여 시스템 중단 없이 안정적으로 데이터를 파싱합니다. SELECT의 경우 제일 첫 번째로 정의된 포맷으로 생성됩니다.</p>
+<pre class="hljs"><code><div><span class="hljs-attr">date_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyyMMdd</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy/MM/dd</span>
+</div></code></pre>
+<h4 id="timestampformats-%EA%B8%B0%EB%B3%B8%EA%B0%92">timestamp_formats 기본값</h4>
+<pre class="hljs"><code><div><span class="hljs-attr">timestamp_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSSXXX</span>   <span class="hljs-comment"># ISO-8601 (timezone)</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSS</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span> <span class="hljs-string">HH:mm:ss</span>
+</div></code></pre>
+<h3 id="63-operation-%EC%84%A4%EC%A0%95">6.3 Operation 설정</h3>
+<pre class="hljs"><code><div><span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">delete_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">DELETE</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">CONTINUE</span>        <span class="hljs-comment"># COMMIT / CONTINUE</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span>              <span class="hljs-comment"># ALL / ROW (INSERT, UPSERT만 ROW 허용)</span>
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      DELETE FROM TB_USER WHERE USER_ID = :USER_ID
+</span>
+    <span class="hljs-attr">fields:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">id,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">insert_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">INSERT</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span>
+  
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      INSERT INTO TB_USER(
+          USER_ID, USER_NAME, USER_NICK, USER_AGE, USER_SCORE,
+          CREATED_DATE, UPDATED_TS, OPTIONAL_COL, IS_ACTIVE,
+          USER_ADDR, USER_PROFILE
+      ) 
+      VALUES (
+          :USER_ID, :USER_NAME, :USER_NICK, :USER_AGE, :USER_SCORE,
+          :CREATED_DATE, :UPDATED_TS, :OPTIONAL_COL, :IS_ACTIVE,
+          :USER_ADDR, :USER_PROFILE
+      )
+</span>
+    <span class="hljs-attr">fields:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">id</span>       <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID</span>      <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">name</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NAME</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">nick</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NICK</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">age</span>      <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_AGE</span>     <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">score</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_SCORE</span>   <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">DECIMAL</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">crtdt</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">CREATED_DATE</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">DATE</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">updts</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">UPDATED_TS</span>   <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">TIMESTAMP</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">optional</span> <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">OPTIONAL_COL</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">active</span>   <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">IS_ACTIVE</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">addr</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ADDR</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">CLOB</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">profile</span>  <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_PROFILE</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">BLOB</span> <span class="hljs-string">}</span>
+
+</div></code></pre>
+<h4 id="operation-%EC%84%A4%EC%A0%95-%ED%95%AD%EB%AA%A9">Operation 설정 항목</h4>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>설명</th>
+<th>필수 여부</th>
+<th>기본값</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>operation_name</code></td>
+<td>Operation 식별자</td>
+<td><strong>필수</strong></td>
+<td>-</td>
+<td>고유해야 함</td>
+</tr>
+<tr>
+<td><code>action_type</code></td>
+<td>Operation 타입</td>
+<td><strong>필수</strong></td>
+<td>-</td>
+<td><code>DELETE</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>UPSERT</code>, <code>SELECT</code>, <code>PROCEDURE</code></td>
+</tr>
+<tr>
+<td><code>data_record</code></td>
+<td>JSON 레코드 키</td>
+<td><strong>필수</strong></td>
+<td>-</td>
+<td>JSON의 최상위 키와 일치</td>
+</tr>
+<tr>
+<td><code>commit_action</code></td>
+<td>트랜잭션 제어</td>
+<td>선택</td>
+<td><code>CONTINUE</code></td>
+<td><code>COMMIT</code>, <code>CONTINUE</code></td>
+</tr>
+<tr>
+<td><code>commit_scope</code></td>
+<td>레코드 처리 단위</td>
+<td>선택</td>
+<td><code>ALL</code></td>
+<td><code>ALL</code>, <code>ROW</code> (SELECT/PROCEDURE 제외)</td>
+</tr>
+<tr>
+<td><code>sql</code></td>
+<td>SQL 문</td>
+<td>조건부 필수</td>
+<td>-</td>
+<td>PROCEDURE 제외 필수</td>
+</tr>
+<tr>
+<td><code>fields</code></td>
+<td>필드 매핑 목록</td>
+<td><strong>필수</strong></td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>has_detail</code></td>
+<td>Master-Detail 여부</td>
+<td>선택</td>
+<td><code>false</code></td>
+<td>Master Operation인 경우 <code>true</code></td>
+</tr>
+<tr>
+<td><code>detail_operations</code></td>
+<td>Detail Operation 목록</td>
+<td>조건부 필수</td>
+<td>-</td>
+<td><code>has_detail=true</code>인 경우 필수</td>
+</tr>
+</tbody>
+</table>
+<h3 id="64-field-%EC%84%A4%EC%A0%95">6.4 Field 설정</h3>
+<pre class="hljs"><code><div><span class="hljs-attr">fields:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">id,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT,</span> <span class="hljs-attr">isWhereParam:</span> <span class="hljs-literal">true</span> <span class="hljs-string">}</span>
+</div></code></pre>
+<h4 id="field-%EC%84%A4%EC%A0%95-%ED%95%AD%EB%AA%A9">Field 설정 항목</h4>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>설명</th>
+<th>필수 여부</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_field</code></td>
+<td>JSON 필드명</td>
+<td><strong>필수</strong></td>
+</tr>
+<tr>
+<td><code>param</code></td>
+<td>SQL 파라미터명 (<code>:param</code> 형식으로 사용)</td>
+<td><strong>필수</strong></td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>데이터 타입</td>
+<td><strong>필수</strong></td>
+</tr>
+<tr>
+<td><code>direction</code></td>
+<td>IN/OUT/INOUT ( SELECT는 OUT이 디폴트 , 그외는 IN이 디폴트 설정임)</td>
+<td>선택</td>
+</tr>
+</tbody>
+</table>
+<h3 id="65-%EC%A7%80%EC%9B%90-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85">6.5 지원 데이터 타입</h3>
+<table>
+<thead>
+<tr>
+<th>타입</th>
+<th>SQL Type</th>
+<th>Java Type</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INT</code></td>
+<td>INTEGER</td>
+<td>Integer</td>
+<td>정수</td>
+</tr>
+<tr>
+<td><code>LONG</code></td>
+<td>BIGINT</td>
+<td>Long</td>
+<td>Long 정수</td>
+</tr>
+<tr>
+<td><code>DOUBLE</code></td>
+<td>DOUBLE</td>
+<td>Double</td>
+<td>실수</td>
+</tr>
+<tr>
+<td><code>FLOAT</code></td>
+<td>FLOAT</td>
+<td>Float</td>
+<td>단정도 실수</td>
+</tr>
+<tr>
+<td><code>STRING</code></td>
+<td>VARCHAR</td>
+<td>String</td>
+<td>문자열</td>
+</tr>
+<tr>
+<td><code>CHAR</code></td>
+<td>CHAR</td>
+<td>String</td>
+<td>고정길이 문자열</td>
+</tr>
+<tr>
+<td><code>DATE</code></td>
+<td>DATE</td>
+<td>java.sql.Date</td>
+<td>날짜</td>
+</tr>
+<tr>
+<td><code>TIMESTAMP</code></td>
+<td>TIMESTAMP</td>
+<td>java.sql.Timestamp</td>
+<td>날짜+시간</td>
+</tr>
+<tr>
+<td><code>DECIMAL</code></td>
+<td>DECIMAL</td>
+<td>BigDecimal</td>
+<td>고정소수점</td>
+</tr>
+<tr>
+<td><code>BOOLEAN</code></td>
+<td>BOOLEAN</td>
+<td>Boolean</td>
+<td>논리값</td>
+</tr>
+<tr>
+<td><code>CLOB</code></td>
+<td>CLOB</td>
+<td>String</td>
+<td>대용량 텍스트</td>
+</tr>
+<tr>
+<td><code>BLOB</code></td>
+<td>BLOB</td>
+<td>byte[]</td>
+<td>바이너리 (Base64 인코딩)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-%EC%82%AC%EC%9A%A9-%EC%98%88%EC%A0%9C">7. 사용 예제</h2>
+<h3 id="71-%EC%98%88%EC%A0%9C-1-delete-%E2%86%92-insert-%E2%86%92-procedure">7.1 예제 1: DELETE → INSERT → PROCEDURE</h3>
+<h4 id="config">Config</h4>
+<pre class="hljs"><code><div><span class="hljs-attr">api_name:</span> <span class="hljs-string">DeleteInsertProcedure</span>
+
+<span class="hljs-attr">target_system_key:</span> <span class="hljs-string">SST0001DEF</span>
+<span class="hljs-attr">target_system_name:</span> <span class="hljs-string">MYTEST</span>
+<span class="hljs-attr">target_jndi_name:</span> <span class="hljs-string">jdbc/SST0001DEF</span>
+
+<span class="hljs-attr">batch_size:</span> <span class="hljs-number">100</span>
+
+<span class="hljs-attr">stop_on_operation_error:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">stop_on_row_error:</span> <span class="hljs-literal">true</span>
+
+<span class="hljs-attr">data_record_path:</span> <span class="hljs-string">/operations</span>
+
+<span class="hljs-attr">date_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyyMMdd</span>
+
+<span class="hljs-attr">timestamp_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSSXXX</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSS</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span> <span class="hljs-string">HH:mm:ss</span>
+  
+<span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">delete_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">DELETE</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">CONTINUE</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span>
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      DELETE FROM TB_USER
+</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">insert_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">INSERT</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span>
+  
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      INSERT INTO TB_USER(
+          USER_ID, USER_NAME, USER_NICK, USER_AGE, USER_SCORE,
+          CREATED_DATE, UPDATED_TS, OPTIONAL_COL, IS_ACTIVE,
+          USER_ADDR, USER_PROFILE
+      ) 
+      VALUES (
+          :USER_ID, :USER_NAME, :USER_NICK, :USER_AGE, :USER_SCORE,
+          :CREATED_DATE, :UPDATED_TS, :OPTIONAL_COL, :IS_ACTIVE,
+          :USER_ADDR, :USER_PROFILE
+      )
+</span>
+    <span class="hljs-attr">fields:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">id</span>       <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID</span>      <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">name</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NAME</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">nick</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NICK</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">age</span>      <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_AGE</span>     <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">score</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_SCORE</span>   <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">DECIMAL</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">crtdt</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">CREATED_DATE</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">DATE</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">updts</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">UPDATED_TS</span>   <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">TIMESTAMP</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">optional</span> <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">OPTIONAL_COL</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">active</span>   <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">IS_ACTIVE</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">addr</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ADDR</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">CLOB</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">profile</span>  <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_PROFILE</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">BLOB</span> <span class="hljs-string">}</span>
+
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">proc_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">PROCEDURE</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span>
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">PROC_COPY_TB_USER()</span>
+</div></code></pre>
+<h4 id="request">Request</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"operations"</span>: {
+        <span class="hljs-attr">"delete_tb_user"</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">"insert_tb_user"</span>: {
+            <span class="hljs-attr">"data"</span>: [
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"사용자_1"</span>,
+                    <span class="hljs-attr">"nick"</span>: <span class="hljs-string">"NICK_1"</span>,
+                    <span class="hljs-attr">"age"</span>: <span class="hljs-number">21</span>,
+                    <span class="hljs-attr">"score"</span>: <span class="hljs-number">1234.56</span>,
+                    <span class="hljs-attr">"crtdt"</span>: <span class="hljs-string">"2026-01-20"</span>,
+                    <span class="hljs-attr">"updts"</span>: <span class="hljs-string">"2026-01-20T06:45:41.529+00:00"</span>,
+                    <span class="hljs-attr">"optional"</span>: <span class="hljs-literal">null</span>,
+                    <span class="hljs-attr">"active"</span>: <span class="hljs-string">"N"</span>,
+                    <span class="hljs-attr">"addr"</span>: <span class="hljs-string">"서울시 강남구 테헤란로 1번지\nCLOB 테스트 데이터"</span>,
+                    <span class="hljs-attr">"profile"</span>: <span class="hljs-string">"UFJPRklMRV9CSU5BUllfMQ=="</span>
+                },
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+                    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"사용자_2"</span>,
+                    <span class="hljs-attr">"nick"</span>: <span class="hljs-string">"NICK_2"</span>,
+                    <span class="hljs-attr">"age"</span>: <span class="hljs-number">22</span>,
+                    <span class="hljs-attr">"score"</span>: <span class="hljs-number">1234.56</span>,
+                    <span class="hljs-attr">"crtdt"</span>: <span class="hljs-string">"2026-01-20"</span>,
+                    <span class="hljs-attr">"updts"</span>: <span class="hljs-string">"2026-01-20T06:45:41.529+00:00"</span>,
+                    <span class="hljs-attr">"optional"</span>: <span class="hljs-literal">null</span>,
+                    <span class="hljs-attr">"active"</span>: <span class="hljs-string">"Y"</span>,
+                    <span class="hljs-attr">"addr"</span>: <span class="hljs-string">"서울시 강남구 테헤란로 2번지\nCLOB 테스트 데이터"</span>,
+                    <span class="hljs-attr">"profile"</span>: <span class="hljs-string">"UFJPRklMRV9CSU5BUllfMg=="</span>
+                }
+            ]
+        },
+        <span class="hljs-attr">"proc_tb_user"</span>: <span class="hljs-literal">null</span>
+    }
+}
+</div></code></pre>
+<p><strong>JSON 구조 규칙:</strong></p>
+<ul>
+<li><code>data_record_path: /operations</code></li>
+<li><code>operation_name</code></li>
+<li><code>data_record: data</code></li>
+</ul>
+<p>위 설정 조합에 따라 처리할 레코드를 참조합니다.</p>
+<ul>
+<li>Value는 배열 또는 <code>null</code>
+<ul>
+<li>배열: 레코드 단위 반복 처리</li>
+<li><code>null</code>: 파라미터 없는 Operation (전체 DELETE, Procedure 등)</li>
+</ul>
+</li>
+</ul>
+<h4 id="response">Response</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"apiName"</span>: <span class="hljs-string">"DeleteInsertProcedure"</span>,
+    <span class="hljs-attr">"targetSystemName"</span>: <span class="hljs-string">"MYTEST"</span>,
+    <span class="hljs-attr">"targetSystemKey"</span>: <span class="hljs-string">"SST0001DEF"</span>,
+    <span class="hljs-attr">"global_transaction_id"</span>: <span class="hljs-string">"e8638e22-9122-4afb-8429-2fb4c4078e5f"</span>,
+    <span class="hljs-attr">"startTime"</span>: <span class="hljs-string">"2026-02-04T22:19:37.863"</span>,
+    <span class="hljs-attr">"endTime"</span>: <span class="hljs-string">"2026-02-04T22:19:37.916"</span>,
+    <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">53</span>,
+    <span class="hljs-attr">"success"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">"code"</span>: <span class="hljs-string">"E206"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Partially committed. (Success: 2, Total: 3)"</span>,
+    <span class="hljs-attr">"errorSummary"</span>: <span class="hljs-string">"[proc_tb_user] (SqlState:23000) ORA-00001: 무결성 제약 조건(C##SIIS.PK_TB_USER2)에 위배됩니다\nORA-06512: \"C##SIIS.PROC_COPY_TB_USER\",  4행\nORA-06512:  1행"</span>,
+    <span class="hljs-attr">"operations"</span>: {
+        <span class="hljs-attr">"delete_tb_user"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">10</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"rowErrors"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"DELETE"</span>,
+            <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+        },
+        <span class="hljs-attr">"insert_tb_user"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">16</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">10</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">10</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">10</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"rowErrors"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"INSERT"</span>,
+            <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+        },
+        <span class="hljs-attr">"proc_tb_user"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">3</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">4</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-string">"Duplicate: Unique constraint violated"</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-string">"1"</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-string">"DB_ERROR"</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-string">"(SqlState:23000) ORA-00001: 무결성 제약 조건(C##SIIS.PK_TB_USER2)에 위배됩니다\nORA-06512: \"C##SIIS.PROC_COPY_TB_USER\",  4행\nORA-06512:  1행\n"</span>,
+            <span class="hljs-attr">"rowErrors"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"PROCEDURE"</span>,
+            <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+        }
+    }
+}
+</div></code></pre>
+<hr>
+<h3 id="72-%EC%98%88%EC%A0%9C-1-select">7.2 예제 1: SELECT</h3>
+<h4 id="config">Config</h4>
+<pre class="hljs"><code><div><span class="hljs-attr">api_name:</span> <span class="hljs-string">SelectParam</span> 
+
+<span class="hljs-attr">target_system_key:</span> <span class="hljs-string">SST0001DEF</span>
+<span class="hljs-attr">target_system_name:</span> <span class="hljs-string">MYTEST</span>
+<span class="hljs-attr">target_jndi_name:</span> <span class="hljs-string">jdbc/SST0001DEF</span>
+
+
+<span class="hljs-attr">stop_on_operation_error:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">stop_on_row_error:</span> <span class="hljs-literal">true</span>
+
+<span class="hljs-attr">max_row_limit:</span> <span class="hljs-number">100000</span>
+
+<span class="hljs-attr">data_record_path:</span> <span class="hljs-string">/operations</span>
+
+<span class="hljs-attr">date_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyyMMdd</span>
+
+<span class="hljs-attr">timestamp_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSSXXX</span>   <span class="hljs-comment"># ISO-8601 (timezone)  </span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSS</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span> <span class="hljs-string">HH:mm:ss</span>
+
+  
+<span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">select_tb_user</span>
+      
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">SELECT</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span> <span class="hljs-comment"># COMMIT/CONTINUE</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span> <span class="hljs-comment"># ALL 수신된 전체 row 일괄 COMMIT / ROW 는 레코드별 COMMIT  ( insert , insert&amp;update 일때만 ROW 허용 , 그외에는 무시 )</span>
+    
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      SELECT USER_ID,
+             USER_NAME,
+             USER_NICK,
+             USER_AGE,
+             USER_SCORE,
+             CREATED_DATE,
+             UPDATED_TS,
+             OPTIONAL_COL,
+             IS_ACTIVE,
+             USER_ADDR,
+             USER_PROFILE
+      FROM TB_USER WHERE USER_ID = :USER_ID
+             
+</span>    <span class="hljs-attr">fields:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">id,</span>       <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID,</span>       <span class="hljs-attr">type:</span> <span class="hljs-string">INT,</span> <span class="hljs-attr">direction:</span> <span class="hljs-string">INOUT</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">name,</span>     <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NAME,</span>     <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">nick,</span>     <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NICK,</span>     <span class="hljs-attr">type:</span> <span class="hljs-string">CHAR</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">age,</span>      <span class="hljs-attr">param:</span> <span class="hljs-string">USER_AGE,</span>      <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">score,</span>    <span class="hljs-attr">param:</span> <span class="hljs-string">USER_SCORE,</span>    <span class="hljs-attr">type:</span> <span class="hljs-string">DECIMAL</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">crtdt,</span>    <span class="hljs-attr">param:</span> <span class="hljs-string">CREATED_DATE,</span>  <span class="hljs-attr">type:</span> <span class="hljs-string">DATE</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">updts,</span>    <span class="hljs-attr">param:</span> <span class="hljs-string">UPDATED_TS,</span>    <span class="hljs-attr">type:</span> <span class="hljs-string">TIMESTAMP</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">optional,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">OPTIONAL_COL,</span>  <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">active,</span>   <span class="hljs-attr">param:</span> <span class="hljs-string">IS_ACTIVE,</span>     <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">addr,</span>     <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ADDR,</span>     <span class="hljs-attr">type:</span> <span class="hljs-string">CLOB</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">profile,</span>  <span class="hljs-attr">param:</span> <span class="hljs-string">USER_PROFILE,</span>  <span class="hljs-attr">type:</span> <span class="hljs-string">BLOB</span> <span class="hljs-string">}</span>
+</div></code></pre>
+<h4 id="request">Request</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"operations"</span>: {
+        <span class="hljs-attr">"select_tb_user"</span>: {
+            <span class="hljs-attr">"data"</span>: [
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"1"</span>
+                }
+            ]
+        }
+    }
+}
+</div></code></pre>
+<h4 id="response">Response</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"apiName"</span>: <span class="hljs-string">"SelectParam"</span>,
+    <span class="hljs-attr">"targetSystemName"</span>: <span class="hljs-string">"MYTEST"</span>,
+    <span class="hljs-attr">"targetSystemKey"</span>: <span class="hljs-string">"SST0001DEF"</span>,
+    <span class="hljs-attr">"global_transaction_id"</span>: <span class="hljs-string">"e8638e22-9122-4afb-8429-2fb4c4078e5f"</span>,
+    <span class="hljs-attr">"startTime"</span>: <span class="hljs-string">"2026-02-04T22:25:04.127"</span>,
+    <span class="hljs-attr">"endTime"</span>: <span class="hljs-string">"2026-02-04T22:25:04.139"</span>,
+    <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">12</span>,
+    <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"code"</span>: <span class="hljs-string">"S000"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Request processed successfully."</span>,
+    <span class="hljs-attr">"operations"</span>: {
+        <span class="hljs-attr">"select_tb_user"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">5</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"rowErrors"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"SELECT"</span>,
+            <span class="hljs-attr">"data"</span>: [
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"1"</span>,
+                    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"사용자_1"</span>,
+                    <span class="hljs-attr">"nick"</span>: <span class="hljs-string">"NICK_1"</span>,
+                    <span class="hljs-attr">"age"</span>: <span class="hljs-number">21</span>,
+                    <span class="hljs-attr">"score"</span>: <span class="hljs-number">1234.56</span>,
+                    <span class="hljs-attr">"crtdt"</span>: <span class="hljs-string">"2026-01-20"</span>,
+                    <span class="hljs-attr">"updts"</span>: <span class="hljs-string">"2026-01-20T15:45:41.529+09:00"</span>,
+                    <span class="hljs-attr">"optional"</span>: <span class="hljs-literal">null</span>,
+                    <span class="hljs-attr">"active"</span>: <span class="hljs-string">"N"</span>,
+                    <span class="hljs-attr">"addr"</span>: <span class="hljs-string">"서울시 강남구 테헤란로 1번지\nCLOB 테스트 데이터"</span>,
+                    <span class="hljs-attr">"profile"</span>: <span class="hljs-string">"UFJPRklMRV9CSU5BUllfMQ=="</span>
+                }
+            ]
+        }
+    }
+}
+</div></code></pre>
+<hr>
+<h3 id="73-%EC%98%88%EC%A0%9C-3-master-detail-%EC%B2%98%EB%A6%AC">7.3 예제 3: Master-Detail 처리</h3>
+<p>Master-Detail 관계의 데이터를 원자적으로 처리합니다.</p>
+<h4 id="config">Config</h4>
+<pre class="hljs"><code><div><span class="hljs-attr">api_name:</span> <span class="hljs-string">InsertMasterDetail</span> 
+
+<span class="hljs-attr">target_system_key:</span> <span class="hljs-string">SST0001DEF</span>
+<span class="hljs-attr">target_system_name:</span> <span class="hljs-string">MYTEST</span>
+<span class="hljs-attr">target_jndi_name:</span> <span class="hljs-string">jdbc/SST0001DEF</span>
+
+<span class="hljs-attr">batch_size:</span> <span class="hljs-number">100</span>
+
+<span class="hljs-attr">stop_on_operation_error:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">stop_on_row_error:</span> <span class="hljs-literal">true</span>
+
+<span class="hljs-attr">data_record_path:</span> <span class="hljs-string">/operations</span>
+
+<span class="hljs-attr">date_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyyMMdd</span>
+
+<span class="hljs-attr">timestamp_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSSXXX</span>   <span class="hljs-comment"># ISO-8601 (timezone)</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSS</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span> <span class="hljs-string">HH:mm:ss</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span>
+  
+<span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">delete_tb_user_histroy</span>
+      
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">DELETE</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">CONTINUE</span> <span class="hljs-comment"># COMMIT/CONTINUE</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span> <span class="hljs-comment"># ALL 수신된 전체 row 일괄 COMMIT / ROW 는 레코드별 COMMIT  ( insert , insert&amp;update 일때만 ROW 허용 , 그외에는 무시 )</span>
+    
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      DELETE FROM TB_USER_HIST
+</span>      
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">delete_tb_user_master</span>
+      
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">DELETE</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">delete_tb_user_master</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">CONTINUE</span> <span class="hljs-comment"># COMMIT/CONTINUE</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span> <span class="hljs-comment"># ALL 수신된 전체 row 일괄 COMMIT / ROW 는 레코드별 COMMIT</span>
+    
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      DELETE FROM TB_USER
+</span>      
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">insert_tb_user_master</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">INSERT</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">has_detail:</span> <span class="hljs-literal">true</span>
+    
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>  <span class="hljs-comment"># Enum: COMMIT or CONTINUE</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span>        <span class="hljs-comment"># Enum: ALL or ROW</span>
+    
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      INSERT INTO TB_USER(
+          USER_ID, USER_NAME, USER_NICK, USER_AGE, USER_SCORE,
+          CREATED_DATE, UPDATED_TS, OPTIONAL_COL, IS_ACTIVE,
+          USER_ADDR, USER_PROFILE
+      ) 
+      VALUES (
+          :USER_ID, :USER_NAME, :USER_NICK, :USER_AGE, :USER_SCORE,
+          :CREATED_DATE, :UPDATED_TS, :OPTIONAL_COL, :IS_ACTIVE,
+          :USER_ADDR, :USER_PROFILE
+      )
+</span>
+    <span class="hljs-attr">fields:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">id</span>       <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID</span>      <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">name</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NAME</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">nick</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NICK</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">age</span>      <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_AGE</span>     <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">score</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_SCORE</span>   <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">DECIMAL</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">crtdt</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">CREATED_DATE</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">DATE</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">updts</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">UPDATED_TS</span>   <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">TIMESTAMP</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">optional</span> <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">OPTIONAL_COL</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">active</span>   <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">IS_ACTIVE</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">addr</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ADDR</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">CLOB</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">profile</span>  <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_PROFILE</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">BLOB</span> <span class="hljs-string">}</span>
+    
+    <span class="hljs-comment"># - data_field: details (<span class="hljs-doctag">Note:</span> processed by detail_operations)</span>
+
+    <span class="hljs-attr">detail_operations:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">insert_tb_user_histroy</span>
+        <span class="hljs-attr">action_type:</span> <span class="hljs-string">INSERT</span>
+        <span class="hljs-attr">data_record:</span> <span class="hljs-string">tb_user_histroy</span>
+        
+        <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+        <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span>
+        
+        <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+          INSERT INTO TB_USER_HIST (HIST_ID,USER_ID,CHANGE_TYPE, CHANGE_DESC, CHANGE_DTTM , CREATED_BY)
+          VALUES (:HIST_ID,:USER_ID,:CHANGE_TYPE, :CHANGE_DESC, :CHANGE_DTTM , :CREATED_BY)
+</span>
+        <span class="hljs-attr">fields:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">histid</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">HIST_ID</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">change_type,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">CHANGE_TYPE,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">change_desc,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">CHANGE_DESC,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">change_dttm,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">CHANGE_DTTM,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">TIMESTAMP</span> <span class="hljs-string">}</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">created_by</span> <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">CREATED_BY</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+        
+        <span class="hljs-attr">inherit_fields:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">id</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID</span>     <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+</div></code></pre>
+<p><strong>핵심 포인트:</strong></p>
+<ul>
+<li><code>has_detail: true</code>: Master-Detail Operation임을 명시</li>
+<li><code>detail_operations</code>: Detail Operation 목록</li>
+<li><code>inherit_fields</code>: Master에서 Detail로 상속할 필드 (여기서는 <code>id</code> → <code>USER_ID</code>)</li>
+</ul>
+<h4 id="request">Request</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"operations"</span>: {
+        <span class="hljs-attr">"delete_tb_user_histroy"</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">"delete_tb_user_master"</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">"insert_tb_user_master"</span>: {
+            <span class="hljs-attr">"data"</span>: [
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1001</span>,
+                    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"홍길동"</span>,
+                    <span class="hljs-attr">"active"</span>: <span class="hljs-string">"Y"</span>,
+                    <span class="hljs-attr">"tb_user_histroy"</span>: [
+                        {
+                            <span class="hljs-attr">"histid"</span>: <span class="hljs-number">1</span>,
+                            <span class="hljs-attr">"change_type"</span>: <span class="hljs-string">"UPDATE"</span>,
+                            <span class="hljs-attr">"change_desc"</span>: <span class="hljs-string">"닉네임변경"</span>,
+                            <span class="hljs-attr">"change_dttm"</span>: <span class="hljs-string">"2026-01-12"</span>,
+                            <span class="hljs-attr">"created_by"</span>: <span class="hljs-string">"admin"</span>                                                        
+                        },
+                        {
+                            <span class="hljs-attr">"histid"</span>: <span class="hljs-number">2</span>,
+                            <span class="hljs-attr">"change_type"</span>: <span class="hljs-string">"UPDATE"</span>,
+                            <span class="hljs-attr">"change_desc"</span>: <span class="hljs-string">"주소변경"</span>,
+                            <span class="hljs-attr">"change_dttm"</span>: <span class="hljs-string">"2026-01-13"</span>,
+                            <span class="hljs-attr">"created_by"</span>: <span class="hljs-string">"admin"</span> 
+                        }
+                    ]
+                },
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1002</span>,
+                    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"김철수"</span>,
+                    <span class="hljs-attr">"active"</span>: <span class="hljs-string">"N"</span>,
+                    <span class="hljs-attr">"tb_user_histroy"</span>: [
+                        {
+                            <span class="hljs-attr">"histid"</span>: <span class="hljs-number">3</span>,
+                            <span class="hljs-attr">"change_type"</span>: <span class="hljs-string">"UPDATE"</span>,
+                            <span class="hljs-attr">"change_desc"</span>: <span class="hljs-string">"성별변경"</span>,
+                            <span class="hljs-attr">"change_dttm"</span>: <span class="hljs-string">"2026-01-14"</span>,
+                            <span class="hljs-attr">"created_by"</span>: <span class="hljs-string">"admin"</span>                                                        
+                        },
+                        {
+                            <span class="hljs-attr">"histid"</span>: <span class="hljs-number">4</span>,
+                            <span class="hljs-attr">"change_type"</span>: <span class="hljs-string">"UPDATE"</span>,
+                            <span class="hljs-attr">"change_desc"</span>: <span class="hljs-string">"국적변경"</span>,
+                            <span class="hljs-attr">"change_dttm"</span>: <span class="hljs-string">"2026-01-15"</span>,
+                            <span class="hljs-attr">"created_by"</span>: <span class="hljs-string">"admin"</span> 
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
+</div></code></pre>
+<p><strong>JSON 구조:</strong></p>
+<ul>
+<li>Master 레코드 내에 Detail 레코드 배열 포함</li>
+<li><code>details</code> 키는 Detail Operation의 <code>data_record</code>와 일치</li>
+<li>Master의 <code>id</code> 필드가 Detail의 <code>USER_ID</code>로 자동 상속됨</li>
+</ul>
+<h4 id="response">Response</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"apiName"</span>: <span class="hljs-string">"InsertMasterDetail"</span>,
+    <span class="hljs-attr">"targetSystemName"</span>: <span class="hljs-string">"MYTEST"</span>,
+    <span class="hljs-attr">"targetSystemKey"</span>: <span class="hljs-string">"SST0001DEF"</span>,
+    <span class="hljs-attr">"global_transaction_id"</span>: <span class="hljs-string">"e8638e22-9122-4afb-8429-2fb4c4078e5f"</span>,
+    <span class="hljs-attr">"startTime"</span>: <span class="hljs-string">"2026-02-04T22:28:20.967"</span>,
+    <span class="hljs-attr">"endTime"</span>: <span class="hljs-string">"2026-02-04T22:28:21.094"</span>,
+    <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">127</span>,
+    <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"code"</span>: <span class="hljs-string">"S000"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Request processed successfully."</span>,
+    <span class="hljs-attr">"operations"</span>: {
+        <span class="hljs-attr">"delete_tb_user_histroy"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"rowErrors"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"DELETE"</span>,
+            <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+        },
+        <span class="hljs-attr">"delete_tb_user_master"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">10</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"rowErrors"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"DELETE"</span>,
+            <span class="hljs-attr">"delete_tb_user_master"</span>: <span class="hljs-literal">null</span>
+        },
+        <span class="hljs-attr">"insert_tb_user_master"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">3</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">19</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"rowErrors"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"INSERT"</span>,
+            <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+        },
+        <span class="hljs-attr">"insert_tb_user_histroy"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">3</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">14</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">4</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">4</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">4</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"rowErrors"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"INSERT"</span>,
+            <span class="hljs-attr">"tb_user_histroy"</span>: <span class="hljs-literal">null</span>
+        }
+    }
+}
+</div></code></pre>
+<p><strong>트랜잭션 처리:</strong></p>
+<pre class="hljs"><code><div>Transaction 1 {
+    [DELETE_DETAIL CONTINUE]
+    [DELETE_MASTER CONTINUE]
+    [INSERT_MASTER COMMIT]
+        Master Record 1
+            → Detail Record 1
+            → Detail Record 2
+        Master Record 2
+            → Detail Record 3
+}
+→ COMMIT (전체 원자적 처리)
+</div></code></pre>
+<p><strong>장점:</strong></p>
+<ul>
+<li>Master와 Detail이 하나의 트랜잭션으로 처리됨</li>
+<li>Detail 실패 시 Master도 함께 Rollback</li>
+<li>데이터 정합성 보장</li>
+</ul>
+<hr>
+<h3 id="74-%EC%98%88%EC%A0%9C-4-row-scope-%EC%B2%98%EB%A6%AC">7.4 예제 4: ROW Scope 처리</h3>
+<p>각 레코드를 독립적인 트랜잭션으로 처리합니다.</p>
+<h4 id="config">Config</h4>
+<pre class="hljs"><code><div><span class="hljs-attr">api_name:</span> <span class="hljs-string">DeleteInsertRow</span>
+
+<span class="hljs-attr">target_system_key:</span> <span class="hljs-string">SST0001DEF</span>
+<span class="hljs-attr">target_system_name:</span> <span class="hljs-string">MYTEST</span>
+<span class="hljs-attr">target_jndi_name:</span> <span class="hljs-string">jdbc/SST0001DEF</span>
+
+<span class="hljs-attr">batch_size:</span> <span class="hljs-number">100</span>
+
+<span class="hljs-attr">stop_on_operation_error:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">stop_on_row_error:</span> <span class="hljs-literal">false</span>
+
+<span class="hljs-attr">data_record_path:</span> <span class="hljs-string">/operations</span>
+
+<span class="hljs-attr">date_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyyMMdd</span>
+
+<span class="hljs-attr">timestamp_formats:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSSXXX</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss.SSS</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd'T'HH:mm:ss</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">yyyy-MM-dd</span> <span class="hljs-string">HH:mm:ss</span>
+
+<span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">delete_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">DELETE</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ALL</span>
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      DELETE FROM TB_USER
+</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">insert_tb_user</span>
+    <span class="hljs-attr">action_type:</span> <span class="hljs-string">INSERT</span>
+    <span class="hljs-attr">data_record:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">commit_action:</span> <span class="hljs-string">COMMIT</span>
+    <span class="hljs-attr">commit_scope:</span> <span class="hljs-string">ROW</span>  <span class="hljs-comment"># ROW 단위로 개별 커밋</span>
+  
+    <span class="hljs-attr">sql:</span> <span class="hljs-string">|
+      INSERT INTO TB_USER(
+          USER_ID, USER_NAME, USER_NICK, USER_AGE, USER_SCORE,
+          CREATED_DATE, UPDATED_TS, OPTIONAL_COL, IS_ACTIVE,
+          USER_ADDR, USER_PROFILE
+      ) 
+      VALUES (
+          :USER_ID, :USER_NAME, :USER_NICK, :USER_AGE, :USER_SCORE,
+          :CREATED_DATE, :UPDATED_TS, :OPTIONAL_COL, :IS_ACTIVE,
+          :USER_ADDR, :USER_PROFILE
+      )
+</span>
+    <span class="hljs-attr">fields:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">id</span>       <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID</span>      <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">name</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NAME</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">nick</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_NICK</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">age</span>      <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_AGE</span>     <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">score</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_SCORE</span>   <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">DECIMAL</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">crtdt</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">CREATED_DATE</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">DATE</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">updts</span>    <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">UPDATED_TS</span>   <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">TIMESTAMP</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">optional</span> <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">OPTIONAL_COL</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">active</span>   <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">IS_ACTIVE</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">STRING</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">addr</span>     <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ADDR</span>    <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">CLOB</span> <span class="hljs-string">}</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">profile</span>  <span class="hljs-string">,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_PROFILE</span> <span class="hljs-string">,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">BLOB</span> <span class="hljs-string">}</span>
+</div></code></pre>
+<h4 id="request">Request</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"operations"</span>: {
+        <span class="hljs-attr">"delete_tb_user"</span>: {
+            <span class="hljs-attr">"data"</span>: [
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>
+                }
+            ]
+        },
+        <span class="hljs-attr">"insert_tb_user"</span>: {
+            <span class="hljs-attr">"data"</span>: [
+                {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"사용자_1"</span>,
+                    <span class="hljs-attr">"nick"</span>: <span class="hljs-string">"NICK_1"</span>,
+                    <span class="hljs-attr">"age"</span>: <span class="hljs-number">21</span>,
+                    <span class="hljs-attr">"score"</span>: <span class="hljs-number">1234.56</span>,
+                    <span class="hljs-attr">"crtdt"</span>: <span class="hljs-string">"2026-01-20"</span>,
+                    <span class="hljs-attr">"updts"</span>: <span class="hljs-string">"2026-01-20T06:45:41.529+00:00"</span>,
+                    <span class="hljs-attr">"optional"</span>: <span class="hljs-literal">null</span>,
+                    <span class="hljs-attr">"active"</span>: <span class="hljs-string">"N"</span>,
+                    <span class="hljs-attr">"addr"</span>: <span class="hljs-string">"서울시 강남구 테헤란로 1번지\nCLOB 테스트 데이터"</span>,
+                    <span class="hljs-attr">"profile"</span>: <span class="hljs-string">"UFJPRklMRV9CSU5BUllfMQ=="</span>
+                }
+            ]
+        }
+    }
+}
+</div></code></pre>
+<h4 id="response">Response</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"apiName"</span>: <span class="hljs-string">"DeleteInsertRow"</span>,
+    <span class="hljs-attr">"targetSystemName"</span>: <span class="hljs-string">"MYTEST"</span>,
+    <span class="hljs-attr">"targetSystemKey"</span>: <span class="hljs-string">"SST0001DEF"</span>,
+    <span class="hljs-attr">"global_transaction_id"</span>: <span class="hljs-string">"e8638e22-9122-4afb-8429-2fb4c4078e5f"</span>,
+    <span class="hljs-attr">"startTime"</span>: <span class="hljs-string">"2026-01-29T09:26:19.578"</span>,
+    <span class="hljs-attr">"endTime"</span>: <span class="hljs-string">"2026-01-29T09:26:19.674"</span>,
+    <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">96</span>,
+    <span class="hljs-attr">"success"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">"code"</span>: <span class="hljs-string">"E206"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Partially committed. (Success: 1, Total: 2)"</span>,
+    <span class="hljs-attr">"errorSummary"</span>: <span class="hljs-string">"[insert_tb_user] (SqlState:72000) ORA-12899: \"C##SIIS\".\"TB_USER\".\"USER_NICK\" 열에 대한 값이 너무 큼(실제: 83, 최대값: 20)"</span>,
+    <span class="hljs-attr">"operations"</span>: {
+        <span class="hljs-attr">"delete_tb_user"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">3</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">10</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">10</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"rowErrors"</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"DELETE"</span>,
+            <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+        },
+        <span class="hljs-attr">"insert_tb_user"</span>: {
+            <span class="hljs-attr">"order"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"success"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"skipped"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"committed"</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">"elapsedMs"</span>: <span class="hljs-number">65</span>,
+            <span class="hljs-attr">"requestRecordCount"</span>: <span class="hljs-number">10</span>,
+            <span class="hljs-attr">"responseRecordCount"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">"successCount"</span>: <span class="hljs-number">9</span>,
+            <span class="hljs-attr">"failCount"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"affectedRows"</span>: <span class="hljs-number">9</span>,
+            <span class="hljs-attr">"errorMessage"</span>: <span class="hljs-string">"Overflow: Data exceeds column maximum length"</span>,
+            <span class="hljs-attr">"errorCode"</span>: <span class="hljs-string">"12899"</span>,
+            <span class="hljs-attr">"errorType"</span>: <span class="hljs-string">"DB_ERROR"</span>,
+            <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-string">"(SqlState:72000) ORA-12899: \"C##SIIS\".\"TB_USER\".\"USER_NICK\" 열에 대한 값이 너무 큼(실제: 83, 최대값: 20)\n"</span>,
+            <span class="hljs-attr">"rowErrors"</span>: [
+                {
+                    <span class="hljs-attr">"rowIndex"</span>: <span class="hljs-number">3</span>,
+                    <span class="hljs-attr">"rowData"</span>: {
+                        <span class="hljs-attr">"id"</span>: <span class="hljs-number">4</span>,
+                        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"사용자_4"</span>,
+                        <span class="hljs-attr">"nick"</span>: <span class="hljs-string">"NICK_4-----------------------------------------------------------------------------"</span>,
+                        <span class="hljs-attr">"age"</span>: <span class="hljs-number">24</span>,
+                        <span class="hljs-attr">"score"</span>: <span class="hljs-number">1234.56</span>,
+                        <span class="hljs-attr">"crtdt"</span>: <span class="hljs-string">"2026-01-20"</span>,
+                        <span class="hljs-attr">"updts"</span>: <span class="hljs-string">"2026-01-20T06:45:41.529+00:00"</span>,
+                        <span class="hljs-attr">"optional"</span>: <span class="hljs-literal">null</span>,
+                        <span class="hljs-attr">"active"</span>: <span class="hljs-string">"Y"</span>,
+                        <span class="hljs-attr">"addr"</span>: <span class="hljs-string">"서울시 강남구 테헤란로 4번지\nCLOB 테스트 데이터"</span>,
+                        <span class="hljs-attr">"profile"</span>: <span class="hljs-string">"UFJPRklMRV9CSU5BUllfNA=="</span>
+                    },
+                    <span class="hljs-attr">"errorDetail"</span>: <span class="hljs-string">"BatchUpdateException: ORA-12899: \"C##SIIS\".\"TB_USER\".\"USER_NICK\" 열에 대한 값이 너무 큼(실제: 83, 최대값: 20)\n"</span>,
+                    <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"2026-01-29T09:26:19.640"</span>
+                }
+            ],
+            <span class="hljs-attr">"actionType"</span>: <span class="hljs-string">"INSERT"</span>,
+            <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+        }
+    }
+}
+</div></code></pre>
+<p><strong>참고:</strong> ROW 단위 COMMIT의 경우 에러가 발생한 데이터를 응답 메시지에 추가하여 전달합니다.</p>
+<p><strong>동작:</strong></p>
+<pre class="hljs"><code><div>Transaction 1 { Record 1 } → COMMIT
+Transaction 2 { Record 2 } → COMMIT
+Transaction 3 { Record 3 } → COMMIT
+</div></code></pre>
+<p><strong>장점:</strong></p>
+<ul>
+<li>일부 레코드 실패해도 성공한 레코드는 저장됨</li>
+<li>대용량 데이터 처리 시 유용</li>
+<li>독립적인 데이터 처리가 가능</li>
+</ul>
+<hr>
+<h2 id="8-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94">8. 성능 최적화</h2>
+<h3 id="81-batch-size-%EC%A1%B0%EC%A0%95">8.1 Batch Size 조정</h3>
+<pre class="hljs"><code><div><span class="hljs-attr">batch_size:</span> <span class="hljs-number">1000</span>
+</div></code></pre>
+<p><strong>권장값:</strong></p>
+<table>
+<thead>
+<tr>
+<th>데이터 규모</th>
+<th>권장 Batch Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&lt; 1,000건</td>
+<td>100</td>
+</tr>
+<tr>
+<td>1,000~10,000건</td>
+<td>500</td>
+</tr>
+<tr>
+<td>10,000~100,000건</td>
+<td>1,000</td>
+</tr>
+<tr>
+<td>&gt; 100,000건</td>
+<td>ROW Scope 고려</td>
+</tr>
+</tbody>
+</table>
+<h3 id="82-connection-pool-%EC%84%A4%EC%A0%95">8.2 Connection Pool 설정</h3>
+<p>WSO2 MI <code>deployment.toml</code> 예시:</p>
+<pre class="hljs"><code><div><span class="hljs-section">[[datasource]]</span>
+<span class="hljs-attr">id</span> = <span class="hljs-string">"SST0001DEF"</span>
+<span class="hljs-attr">url</span> = <span class="hljs-string">"jdbc:oracle:thin:@localhost:1521/XE"</span>
+<span class="hljs-attr">username</span> = <span class="hljs-string">"C##siis"</span>
+<span class="hljs-attr">password</span> = <span class="hljs-string">"siis1234"</span>
+<span class="hljs-attr">driver</span> = <span class="hljs-string">"oracle.jdbc.OracleDriver"</span>
+<span class="hljs-attr">jndi_name</span> = <span class="hljs-string">"jdbc/SST0001DEF"</span>
+
+<span class="hljs-comment"># Connection Pool 설정</span>
+<span class="hljs-section">[datasource.pool_options]</span>
+<span class="hljs-attr">max_active</span> = <span class="hljs-number">20</span>
+<span class="hljs-attr">max_idle</span> = <span class="hljs-number">10</span>
+<span class="hljs-attr">min_idle</span> = <span class="hljs-number">5</span>
+<span class="hljs-attr">initial_size</span> = <span class="hljs-number">5</span>
+<span class="hljs-attr">max_wait</span> = <span class="hljs-number">30000</span>
+
+<span class="hljs-comment"># Connection 검증</span>
+<span class="hljs-attr">test_on_borrow</span> = <span class="hljs-literal">true</span>
+<span class="hljs-attr">test_while_idle</span> = <span class="hljs-literal">true</span>
+<span class="hljs-attr">validation_query</span> = <span class="hljs-string">"SELECT 1 FROM DUAL"</span>
+<span class="hljs-attr">validation_interval</span> = <span class="hljs-number">30000</span>
+
+<span class="hljs-comment"># Idle Connection 제거</span>
+<span class="hljs-attr">time_between_eviction_runs_millis</span> = <span class="hljs-number">30000</span>
+<span class="hljs-attr">min_evictable_idle_time_millis</span> = <span class="hljs-number">600000</span>
+</div></code></pre>
+<hr>
+<h2 id="9-%EC%A0%9C%EC%95%BD%EC%82%AC%ED%95%AD">9. 제약사항</h2>
+<h3 id="91-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%A0%9C%EC%95%BD">9.1 기술적 제약</h3>
+<ol>
+<li>
+<p><strong>Named Parameter 형식</strong></p>
+<ul>
+<li><code>:paramName</code> 형식만 지원</li>
+<li><code>?</code> (positional parameter) 미지원</li>
+</ul>
+</li>
+<li>
+<p><strong>Master-Detail Depth</strong></p>
+<ul>
+<li>최대 1 depth만 지원</li>
+<li>Master → Detail만 가능</li>
+<li>Master → Detail → Sub-Detail 불가능</li>
+</ul>
+</li>
+<li>
+<p><strong>ROW Scope 제한</strong></p>
+<ul>
+<li><code>INSERT</code>, <code>UPSERT</code> , <code>DELETE</code>, <code>UPDATE</code> 타입에서만 사용 가능</li>
+<li><code>SELECT</code>, <code>PROCEDURE</code>는 <code>ALL</code> scope만 가능</li>
+</ul>
+</li>
+<li>
+<p><strong>BLOB 데이터</strong></p>
+<ul>
+<li>Base64 인코딩 필수</li>
+<li>최대 크기는 DB 설정에 따름</li>
+</ul>
+</li>
+</ol>
+<h3 id="92-%EC%84%A4%EC%A0%95-%EC%A0%9C%EC%95%BD">9.2 설정 제약</h3>
+<ol>
+<li>
+<p><strong>operation_name 중복 불가</strong></p>
+<pre class="hljs"><code><div><span class="hljs-attr">operations:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">op1</span>  <span class="hljs-comment"># ✅ OK</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">op2</span>  <span class="hljs-comment"># ✅ OK</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">operation_name:</span> <span class="hljs-string">op1</span>  <span class="hljs-comment"># ❌ 중복!</span>
+</div></code></pre>
+</li>
+<li>
+<p><strong>inherit_fields 필드 존재 확인</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Master fields</span>
+<span class="hljs-attr">fields:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">userId,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>
+
+<span class="hljs-comment"># Detail inherit_fields</span>
+<span class="hljs-attr">inherit_fields:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">userId,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">USER_ID,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>   <span class="hljs-comment"># ✅ Master에 존재</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">data_field:</span> <span class="hljs-string">orderId,</span> <span class="hljs-attr">param:</span> <span class="hljs-string">ORDER_ID,</span> <span class="hljs-attr">type:</span> <span class="hljs-string">INT</span> <span class="hljs-string">}</span>  <span class="hljs-comment"># ❌ Master에 없음! 에러 발생</span>
+</div></code></pre>
+</li>
+</ol>
+<hr>
+<h2 id="10-%EB%B0%B0%ED%8F%AC-%EA%B0%80%EC%9D%B4%EB%93%9C">10. 배포 가이드</h2>
+<h3 id="101-wso2-mi-%ED%86%A0%ED%81%B0-%EC%83%9D%EC%84%B1">10.1 WSO2 MI 토큰 생성</h3>
+<pre class="hljs"><code><div>curl --location <span class="hljs-string">'https://localhost:9164/management/login'</span> \
+  --header <span class="hljs-string">'Accept: application/json'</span> \
+  --header <span class="hljs-string">'Authorization: Basic YWRtaW46YWRtaW4='</span>
+</div></code></pre>
+<p><strong>Response:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"AccessToken"</span>: <span class="hljs-string">"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+}
+</div></code></pre>
+<h3 id="102-registry%EC%97%90-config-%EB%93%B1%EB%A1%9D">10.2 Registry에 Config 등록</h3>
+<pre class="hljs"><code><div>curl --location --request POST <span class="hljs-string">'https://localhost:9164/management/registry-resources/content?path=registry/config/jdbc/DeleteInsertProcedure.yaml&amp;mediaType=text'</span> \
+  --header <span class="hljs-string">'Content-Type: text/plain;charset=utf-8'</span> \
+  --header <span class="hljs-string">'Authorization: Bearer {ACCESS_TOKEN}'</span> \
+  --data <span class="hljs-string">'@DeleteInsertProcedure.yaml'</span>
+</div></code></pre>
+<p><strong>파라미터:</strong></p>
+<ul>
+<li><code>path</code>: Registry 경로 (<code>registry/config/jdbc/{파일명}.yaml</code>)</li>
+<li><code>mediaType</code>: <code>text</code> (YAML 파일)</li>
+<li><code>Authorization</code>: 12.1에서 생성된 토큰</li>
+</ul>
+<h3 id="103-config-%EC%A1%B0%ED%9A%8C">10.3 Config 조회</h3>
+<pre class="hljs"><code><div>curl --location --request GET <span class="hljs-string">'https://localhost:9164/management/registry-resources/content?path=registry/config/jdbc/DeleteInsertProcedure.yaml&amp;mediaType=text'</span> \
+  --header <span class="hljs-string">'Content-Type: text/plain;charset=utf-8'</span> \
+  --header <span class="hljs-string">'Authorization: Bearer {ACCESS_TOKEN}'</span> \
+</div></code></pre>
+<h3 id="104-config-%EC%82%AD%EC%A0%9C">10.4 Config 삭제</h3>
+<pre class="hljs"><code><div>curl --location --request DELETE <span class="hljs-string">'https://localhost:9164/management/registry-resources/content?path=registry/config/jdbc/DeleteInsertProcedure.yaml&amp;
+mediaType=text'</span> \
+  --header <span class="hljs-string">'Content-Type: text/plain;charset=utf-8'</span> \
+  --header <span class="hljs-string">'Authorization: Bearer {ACCESS_TOKEN}'</span> \
+</div></code></pre>
+<h3 id="105-registry%EC%97%90-config-%EC%88%98%EC%A0%95">10.5 Registry에 Config 수정</h3>
+<pre class="hljs"><code><div>curl --location --request PUT <span class="hljs-string">'https://localhost:9164/management/registry-resources/content?path=registry/config/jdbc/DeleteInsertProcedure.yaml&amp;mediaType=text'</span> \
+  --header <span class="hljs-string">'Content-Type: text/plain;charset=utf-8'</span> \
+  --header <span class="hljs-string">'Authorization: Bearer {ACCESS_TOKEN}'</span> \
+  --data <span class="hljs-string">'@DeleteInsertProcedure.yaml'</span>
+</div></code></pre>
+<hr>
+
+</body>
+</html>

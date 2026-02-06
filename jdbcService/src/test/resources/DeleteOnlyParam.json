@@ -1,0 +1,12 @@
+{
+    "operations": {
+        "delete_tb_user": {
+            "data": [
+                {
+                    "id": 6,
+                    "name": "사용자_6"
+                }
+            ]
+        }
+    }
+}

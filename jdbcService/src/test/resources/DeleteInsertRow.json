@@ -1,0 +1,172 @@
+{
+    "operations": {
+        "delete_tb_user": {
+            "data": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                },
+                {
+                    "id": 9
+                },
+                {
+                    "id": 10
+                }
+            ]
+        },
+        "insert_tb_user": {
+            "data": [
+                {
+                    "nick": "NICK_1",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfMQ==",
+                    "name": "사용자_1",
+                    "active": "N",
+                    "optional": null,
+                    "id": 1,
+                    "addr": "서울시 강남구 테헤란로 1번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 21
+                },
+                {
+                    "nick": "NICK_2",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfMg==",
+                    "name": "사용자_2",
+                    "active": "Y",
+                    "optional": null,
+                    "id": 2,
+                    "addr": "서울시 강남구 테헤란로 2번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 22
+                },
+                {
+                    "nick": "NICK_3",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfMw==",
+                    "name": "사용자_3",
+                    "active": "N",
+                    "optional": null,
+                    "id": 3,
+                    "addr": "서울시 강남구 테헤란로 3번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 23
+                },
+                {
+                    "nick": "NICK_4-----------------------------------------------------------------------------",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfNA==",
+                    "name": "사용자_4",
+                    "active": "Y",
+                    "optional": null,
+                    "id": 4,
+                    "addr": "서울시 강남구 테헤란로 4번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 24
+                },
+                {
+                    "nick": "NICK_5",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfNQ==",
+                    "name": "사용자_5",
+                    "active": "N",
+                    "optional": null,
+                    "id": 5,
+                    "addr": "서울시 강남구 테헤란로 5번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 25
+                },
+                {
+                    "nick": "NICK_6",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfNg==",
+                    "name": "사용자_6",
+                    "active": "Y",
+                    "optional": null,
+                    "id": 6,
+                    "addr": "서울시 강남구 테헤란로 6번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 26
+                },
+                {
+                    "nick": "NICK_7",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfNw==",
+                    "name": "사용자_7",
+                    "active": "N",
+                    "optional": null,
+                    "id": 7,
+                    "addr": "서울시 강남구 테헤란로 7번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 27
+                },
+                {
+                    "nick": "NICK_8",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfOA==",
+                    "name": "사용자_8",
+                    "active": "Y",
+                    "optional": null,
+                    "id": 8,
+                    "addr": "서울시 강남구 테헤란로 8번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 28
+                },
+                {
+                    "nick": "NICK_9",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfOQ==",
+                    "name": "사용자_9",
+                    "active": "N",
+                    "optional": null,
+                    "id": 9,
+                    "addr": "서울시 강남구 테헤란로 9번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 29
+                },
+                {
+                    "nick": "NICK_10",
+                    "score": 1234.56,
+                    "profile": "UFJPRklMRV9CSU5BUllfMTA=",
+                    "name": "사용자_10",
+                    "active": "Y",
+                    "optional": null,
+                    "id": 10,
+                    "addr": "서울시 강남구 테헤란로 10번지\nCLOB 테스트 데이터",
+                    "crtdt": "2026-01-20",
+                    "updts": "2026-01-20T06:45:41.529+00:00",
+                    "age": 20
+                }
+            ]
+        }
+    }
+}

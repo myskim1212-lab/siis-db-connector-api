@@ -1,0 +1,25 @@
+api_name: DeleteOnlyParam
+
+target_system_key: SST0001DEF
+target_system_name: MYTEST
+target_jndi_name: jdbc/SST0001DEF
+
+batch_size: 100
+retry_count: 3
+
+stop_on_operation_error: true
+stop_on_row_error: true
+
+data_record_path: /
+
+operations:
+  - operation_name: delete_tb_user
+    type: delete
+    data_record: delete_tb_user
+    commit_action: COMMIT
+    commit_scope: ALL
+    sql: |
+      DELETE FROM TB_USER WHERE USER_ID=:USER_ID
+
+    fields:
+      - { data_field: id, param: USER_ID, type: INT }

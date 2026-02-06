@@ -1,0 +1,73 @@
+api_name: DeleteInsertProcedure
+
+target_system_key: SST0001DEF
+target_system_name: MYTEST
+target_jndi_name: jdbc/SST0001DEF
+
+batch_size: 100
+
+stop_on_operation_error: true
+stop_on_row_error: true
+
+data_record_path: /operations
+
+date_formats:
+  - yyyy-MM-dd
+  - yyyyMMdd
+
+timestamp_formats:
+  - yyyy-MM-dd'T'HH:mm:ss.SSSXXX   # ISO-8601 (timezone)
+  - yyyy-MM-dd'T'HH:mm:ss.SSS
+  - yyyy-MM-dd'T'HH:mm:ss
+  - yyyy-MM-dd HH:mm:ss
+  
+operations:
+  - operation_name: delete_tb_user
+    type: delete
+    data_record: data
+    commit_action: CONTINUE # COMMIT/CONTINUE
+    commit_scope: ALL # ALL 수신된 전체 row 일괄 COMMIT / ROW 는 레코드별 COMMIT  ( insert , insert&update 일때만 ROW 허용 , 그외에는 무시 )
+    sql: |
+      DELETE FROM TB_USER
+
+  - operation_name: insert_tb_user
+    type: insert
+    data_record: data
+
+    commit_action: COMMIT # COMMIT/CONTINUE
+    commit_scope: ALL # ALL 수신된 전체 row 일괄 COMMIT / ROW 는 레코드별 COMMIT
+  
+    sql: |
+      INSERT INTO TB_USER(
+          USER_ID, USER_NAME, USER_NICK, USER_AGE, USER_SCORE,
+          CREATED_DATE, UPDATED_TS, OPTIONAL_COL, IS_ACTIVE,
+          USER_ADDR, USER_PROFILE
+      ) 
+      VALUES (
+          :USER_ID, :USER_NAME, :USER_NICK, :USER_AGE, :USER_SCORE,
+          :CREATED_DATE, :UPDATED_TS, :OPTIONAL_COL, :IS_ACTIVE,
+          :USER_ADDR, :USER_PROFILE
+      )
+
+    fields:
+      - { data_field: id       , param: USER_ID      , type: INT }
+      - { data_field: name     , param: USER_NAME    , type: STRING }
+      - { data_field: nick     , param: USER_NICK    , type: STRING }
+      - { data_field: age      , param: USER_AGE     , type: INT }
+      - { data_field: score    , param: USER_SCORE   , type: DECIMAL }
+      - { data_field: crtdt    , param: CREATED_DATE , type: DATE }
+      - { data_field: updts    , param: UPDATED_TS   , type: TIMESTAMP }
+      - { data_field: optional , param: OPTIONAL_COL , type: STRING }
+      - { data_field: active   , param: IS_ACTIVE    , type: STRING }
+      - { data_field: addr     , param: USER_ADDR    , type: CLOB }
+      - { data_field: profile  , param: USER_PROFILE , type: BLOB }
+
+  - operation_name: proc_tb_user
+  
+    type: procedure
+    data_record: data
+    
+    commit_action: COMMIT
+    commit_scope: ALL
+    
+    sql: PROC_COPY_TB_USER()      

@@ -1,0 +1,59 @@
+api_name: SelectParam 
+
+target_system_key: SST0001DEF
+target_system_name: MYTEST
+target_jndi_name: jdbc/SST0001DEF
+
+
+stop_on_operation_error: true
+stop_on_row_error: true
+
+max_row_limit: 100000
+
+data_record_path: /operations
+
+date_formats:
+  - yyyy-MM-dd
+  - yyyyMMdd
+
+timestamp_formats:
+  - yyyy-MM-dd'T'HH:mm:ss.SSSXXX   # ISO-8601 (timezone)  
+  - yyyy-MM-dd'T'HH:mm:ss.SSS
+  - yyyy-MM-dd'T'HH:mm:ss
+  - yyyy-MM-dd HH:mm:ss
+
+  
+operations:
+  - operation_name: select_tb_user
+      
+    action_type: SELECT
+    data_record: data
+    commit_action: COMMIT # COMMIT/CONTINUE
+    commit_scope: ALL # ALL 수신된 전체 row 일괄 COMMIT / ROW 는 레코드별 COMMIT  ( insert , insert&update 일때만 ROW 허용 , 그외에는 무시 )
+    
+    sql: |
+      SELECT USER_ID,
+             USER_NAME,
+             USER_NICK,
+             USER_AGE,
+             USER_SCORE,
+             CREATED_DATE,
+             UPDATED_TS,
+             OPTIONAL_COL,
+             IS_ACTIVE,
+             USER_ADDR,
+             USER_PROFILE
+      FROM TB_USER WHERE USER_ID = :USER_ID
+             
+    fields:
+      - { data_field: id,       param: USER_ID,       type: INT,       isWhereParam: true  }
+      - { data_field: name,     param: USER_NAME,     type: STRING,    isWhereParam: false }
+      - { data_field: nick,     param: USER_NICK,     type: STRING,    isWhereParam: false }
+      - { data_field: age,      param: USER_AGE,      type: INT,       isWhereParam: false }
+      - { data_field: score,    param: USER_SCORE,    type: DECIMAL,   isWhereParam: false }
+      - { data_field: crtdt,    param: CREATED_DATE,  type: DATE,      isWhereParam: false }
+      - { data_field: updts,    param: UPDATED_TS,    type: TIMESTAMP, isWhereParam: false }
+      - { data_field: optional, param: OPTIONAL_COL,  type: STRING,    isWhereParam: false }
+      - { data_field: active,   param: IS_ACTIVE,     type: STRING,    isWhereParam: false }
+      - { data_field: addr,     param: USER_ADDR,     type: CLOB,      isWhereParam: false }
+      - { data_field: profile,  param: USER_PROFILE,  type: BLOB,      isWhereParam: false }

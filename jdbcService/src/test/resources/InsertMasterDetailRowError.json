@@ -1,0 +1,41 @@
+{
+    "operations": {
+        "delete_tb_user_detail": null,
+        "delete_tb_user_master": null,
+        "insert_tb_user_master": {
+            "data": [
+                {
+                    "id": 1001,
+                    "name": "홍길동",
+                    "active": "Y",
+                    "details": [
+                        {
+                            "detailId": 1,
+                            "detailType": "PREFERENCE----------------------------------------------------------------------------------------------",
+                            "detailValue": "DARK_MODE"
+                        },
+                        {
+                            "detailId": 2,
+                            "detailType": "HISTORY",
+                            "detailValue": "LAST_LOGIN",
+                            "detailDate": "2026-01-12"
+                        }
+                    ]
+                },
+                {
+                    "id": 1002,
+                    "name": "김철수",
+                    "active": "N",
+                    "details": [
+                        {
+                            "detailId": 3,
+                            "detailType": "SETTING",
+                            "detailValue": "SMS_NOTIFICATION",
+                            "detailNumber": 0
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

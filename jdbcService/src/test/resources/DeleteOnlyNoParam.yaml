@@ -1,0 +1,21 @@
+api_name: DeleteOnlyNoParam
+
+target_system_key: SST0001DEF
+target_system_name: MYTEST
+target_jndi_name: jdbc/SST0001DEF
+
+batch_size: 100
+
+stop_on_operation_error: true
+stop_on_row_error: true
+
+data_record_path: /operations
+
+operations:
+  - operation_name: delete_tb_user
+    type: delete
+    data_record: data
+    commit_action: COMMIT
+    commit_scope: ALL #  insert , insert&update 일때만 ROW 허용 , 그외에는 무시
+    sql: |
+      DELETE FROM TB_USER

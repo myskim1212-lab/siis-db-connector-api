@@ -1,0 +1,11 @@
+{
+    "operations": {
+        "select_tb_user": {
+            "data": [
+                {
+                    "id": 1
+                }
+            ]
+        }
+    }
+}

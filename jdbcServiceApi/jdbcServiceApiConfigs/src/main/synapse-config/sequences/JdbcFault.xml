@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="JdbcFault" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <property name="message.builder.invoked" scope="axis2" type="BOOLEAN" value="true"/>
+    <filter regex="true" source="fn:contains($ctx:ERROR_MESSAGE,'sequence')">
+        <then>
+            <property name="ERROR_MESSAGE" scope="default" type="STRING" value="Requested Layout Not Found"/>
+            <property name="HTTP_SC" scope="axis2" type="STRING" value="404"/>
+        </then>
+        <else/>
+    </filter>
+    <!-- Log the message at the full log level with the ERROR_MESSAGE and the ERROR_CODE -->
+    <log level="custom">
+        <property expression="$ctx:msgID" name="msgID"/>
+        <property expression="$ctx:apiName" name="APIName"/>
+        <property expression="fn:concat('JdbcFault sequence. Reason : ',get-property('ERROR_MESSAGE'))" name="Message"/>
+    </log>
+    <enrich>
+        <source clone="true" type="inline">
+            <data xmlns=""/>
+        </source>
+        <target type="body"/>
+    </enrich>
+    <payloadFactory media-type="json">
+        <format>{
+        	"apiName":$1,
+            "success": false,
+            "code": "$2",
+            "message": "$3"
+        }</format>
+        <args>
+            <arg evaluator="xml" expression="$ctx:apiName"/>
+            <arg evaluator="xml" expression="$ctx:ERROR_CODE"/>
+            <arg evaluator="xml" expression="$ctx:ERROR_MESSAGE"/>
+        </args>
+    </payloadFactory>
+    <property expression="json-eval($.)" name="eventDetail" scope="default" type="STRING"/>
+    <property name="RESPONSE" scope="default" type="STRING" value="true"/>
+    <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+    <property name="ContentType" scope="axis2" type="STRING" value="application/json"/>
+    <header action="remove" name="To" scope="default"/>
+    <property action="remove" name="NO_ENTITY_BODY" scope="axis2"/>
+    <property action="remove" name="ContentType" scope="axis2"/>
+    <property action="remove" name="Authorization" scope="transport"/>
+    <property action="remove" name="Host" scope="transport"/>
+    <property action="remove" name="Accept" scope="transport"/>
+    <property action="remove" name="X-JWT-Assertion" scope="transport"/>
+    <property expression="get-property('SYSTEM_TIME')" name="endTime" scope="default" type="STRING"/>
+    <property expression="fn:string($ctx:endTime - $ctx:startTime)" name="elapsedTime" scope="default" type="STRING"/>
+    <log level="custom">
+        <property expression="$ctx:msgID" name="msgID"/>
+        <property expression="fn:concat($ctx:elapsedTime,'ms')" name="API Total Elapsed Time (Error)"/>
+    </log>
+    <property name="HTTP_SC" scope="axis2" type="STRING" value="500"/>
+    <respond/>
+</sequence>
